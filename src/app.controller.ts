@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Res, HttpStatus, Param } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -10,9 +10,15 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Get('/exception')
-  getException(): string {
-    return this.appService.getException();
+  @Get('/response/:response')
+  getException(@Param('response') responseCode: string, @Res() response) {
+    if (this.appService.isResponseCode(responseCode)) {
+      response.status(responseCode).send();
+      return;
+    }
+    response.status(200);
+    response.write(responseCode + " is not a possible response code.");
+    response.send();
   }
 
   @Get('/log')

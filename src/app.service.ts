@@ -1,9 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpStatus } from '@nestjs/common';
 
 @Injectable()
 export class AppService {
   getHello(): string {
     return 'Hello World!';
+  }
+
+  isResponseCode(responseCode: string): boolean {
+    if (!isNaN(parseInt(responseCode))) {
+      return true;
+    }  
+    return false;
   }
 
   getException(): string {
